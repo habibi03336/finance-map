@@ -16,6 +16,8 @@ const calculateFinance = (
 			? finance.operatingProfit / finance.sales
 			: null;
 	if (index === "자본") return finance.equity;
+	if (index === "현금성자산") return finance.cashEquivalents;
+	if (index === "부채") return finance.debt;
 	throw Error("존재하지 않는 지표입니다.");
 };
 
