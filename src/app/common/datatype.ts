@@ -8,10 +8,12 @@ export type unit = "%" | "원" | "백만원" | "억원" | "천주";
 
 export type financeIndex =
 	| "자본"
+	| "부채"
 	| "순이익"
 	| "영업이익"
 	| "영업이익률"
 	| "매출"
+	| "현금성자산"
 	| "ROE";
 
 export type marketIndex = "주가" | "상장주식수" | "시가총액";
