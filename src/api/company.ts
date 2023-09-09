@@ -12,9 +12,11 @@ interface companyFinance {
 	year: number;
 	quarter: number;
 	equity: number | null;
+	debt: number | null;
 	sales: number | null;
 	operatingProfit: number | null;
 	netProfit: number | null;
+	cashEquivalents: number | null;
 }
 
 export const GET_COMPANY_FINANCE = (
