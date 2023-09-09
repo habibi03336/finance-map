@@ -7,8 +7,10 @@ export type finance = {
 	quarter: RawQuarter;
 	sales: number | null;
 	equity: number | null;
+	debt: number | null;
 	operatingProfit: number | null;
 	netProfit: number | null;
+	cashEquivalents: number | null;
 };
 
 export type companyFinance = {

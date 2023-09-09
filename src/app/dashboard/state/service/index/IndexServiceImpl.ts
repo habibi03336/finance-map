@@ -9,6 +9,8 @@ const indexFormatterMap = new Map<financeIndex, (num: number) => string>([
 	["순이익", (num: number) => numToUnit.speakingNum(num)],
 	["영업이익", (num: number) => numToUnit.speakingNum(num)],
 	["자본", (num: number) => numToUnit.speakingNum(num)],
+	["부채", (num: number) => numToUnit.speakingNum(num)],
+	["현금성자산", (num: number) => numToUnit.speakingNum(num)],
 ]);
 const indexUnitMap = new Map<financeIndex, string>([
 	["ROE", "(%)"],
@@ -17,6 +19,8 @@ const indexUnitMap = new Map<financeIndex, string>([
 	["순이익", "(원)"],
 	["영업이익", "(원)"],
 	["자본", "(원)"],
+	["부채", "(원)"],
+	["현금성자산", "(원)"],
 ]);
 
 class IndexServiceImpl implements IndexService {
@@ -27,6 +31,8 @@ class IndexServiceImpl implements IndexService {
 		"순이익",
 		"영업이익률",
 		"자본",
+		"부채",
+		"현금성자산",
 		"ROE",
 	];
 
