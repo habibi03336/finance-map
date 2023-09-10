@@ -22,6 +22,8 @@ const mockCfr: CompanyFinanceRepository = {
 				equity: 0,
 				operatingProfit: 0,
 				netProfit: 0,
+				debt: null,
+				cashEquivalents: null,
 			});
 		}
 		return new Promise((resolve) => {
