@@ -1,4 +1,4 @@
-import { companyRoot, index, indexRow } from "@/app/heatmap/datatype";
+import { companyFinance, index, indexRow } from "@/app/heatmap/datatype";
 import indexCalculator from "./financeMarketIndex/indexCalculatePolicy";
 import indexUnit from "./financeMarketIndex/indexUnit";
 import AggregatorService from "./AggregatorService";
@@ -11,7 +11,7 @@ class AggregatorServiceImpl implements AggregatorService {
 		this.#colorMapper = colorMapper;
 	}
 
-	getFSData(indexs: index[], companies: companyRoot[]) {
+	getFSData(indexs: index[], companies: companyFinance[]) {
 		const res = {
 			companies: companies.map((company) => company.tag),
 			rows: [] as indexRow[],

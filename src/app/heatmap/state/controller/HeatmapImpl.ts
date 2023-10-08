@@ -1,110 +1,78 @@
 import { makeAutoObservable } from "mobx";
 import AggregatorService from "../service/Aggregator/AggregatorService";
-import CompanyManagerService from "../service/CompanyManager/CompanyManagerService";
-import IndexManagerService from "../service/IndexManager/IndexManagerService";
-import PeriodManagerService from "../service/PeriodManager/PeriodManagerService";
-import { company, period, fsHeatmapData, index } from "../../datatype";
+import {
+	company,
+	period,
+	fsHeatmapData,
+	index,
+	companyFinance,
+} from "../../datatype";
 import { Heatmap } from "./Heatmap";
+import CompanyFinanceFetcher from "../service/CompanyFinanceFetcher/CompanyFinanceFetcher";
+import { defaultPeriod } from "../constant/period";
+import { defaultIndexes } from "../constant";
 
 class HeatmapImpl implements Heatmap {
-	FSdata: fsHeatmapData | null = null;
-	loading: boolean = false;
+	public loading: boolean = false;
+	public period: period = defaultPeriod;
+	public indexes: index[] = defaultIndexes;
+	private companies: company[] = [];
+	private companiesFinance: companyFinance[] = [];
 
-	#peroidManager: PeriodManagerService;
-	#indexManager: IndexManagerService;
-	#companyManager: CompanyManagerService;
 	#aggregator: AggregatorService;
+	#companyFinanceFetcher: CompanyFinanceFetcher;
 
 	constructor(
-		periodM: PeriodManagerService,
-		indexM: IndexManagerService,
-		companyM: CompanyManagerService,
-		aggregator: AggregatorService
+		aggregator: AggregatorService,
+		companyFinanceFetcher: CompanyFinanceFetcher
 	) {
-		this.#peroidManager = periodM;
-		this.#indexManager = indexM;
-		this.#companyManager = companyM;
 		this.#aggregator = aggregator;
-		this.updateCompareData();
+		this.#companyFinanceFetcher = companyFinanceFetcher;
 		makeAutoObservable(this);
 	}
 
-	selectedCompanies() {
-		return this.#companyManager.companies.map((elem) => elem.tag);
+	get FSdata(): fsHeatmapData {
+		const heatmapData = this.#aggregator.getFSData(
+			this.indexes,
+			this.companiesFinance
+		);
+		return heatmapData;
 	}
 
-	selectedPeriod() {
-		return this.#peroidManager.period;
-	}
-
-	selectedIndexs() {
-		return this.#indexManager.selectedIndexs;
-	}
-
-	allIndexs() {
-		return this.#indexManager.allIndexs;
-	}
-
-	availablePeriod() {
-		return this.#peroidManager.availablePeriod;
-	}
-
-	async addCompany(company: company) {
-		this.updateStart();
-		try {
-			await this.#companyManager.add(company, this.#peroidManager.period);
-		} catch (e) {
-			throw e;
-		} finally {
-			this.updateDone();
-		}
-	}
-
-	removeCompany(company: company) {
-		this.updateStart();
-		this.#companyManager.delete(company);
-		this.updateDone();
+	async updateCompaniesFinance() {
+		this.loading = true;
+		this.companiesFinance =
+			await this.#companyFinanceFetcher.getCompaniesFinance(
+				this.companies,
+				this.period
+			);
+		this.loading = false;
 	}
 
 	addIndex(index: index) {
-		this.updateStart();
-		this.#indexManager.add(index);
-		this.updateDone();
+		if (this.indexes.includes(index)) return;
+		this.indexes.push(index);
 	}
 
 	removeIndex(index: index) {
-		this.updateStart();
-		this.#indexManager.delete(index);
-		this.updateDone();
+		if (!this.indexes.includes(index)) return;
+		this.indexes = this.indexes.filter((elem) => elem != index);
 	}
 
-	async updatePeriod(period: period) {
-		this.updateStart();
-		try {
-			await this.#companyManager.updatePeriod(period);
-			this.#peroidManager.update(period);
-		} catch (e) {
-			await this.#companyManager.updatePeriod(this.#peroidManager.period);
-			throw e;
-		} finally {
-			this.updateDone();
-		}
+	addCompany(company: company) {
+		if (this.companies.includes(company)) return;
+		this.companies.push(company);
+		this.updateCompaniesFinance();
 	}
 
-	private updateCompareData() {
-		this.FSdata = this.#aggregator.getFSData(
-			this.#indexManager.selectedIndexs,
-			this.#companyManager.getCompaniesRoot()
-		);
+	removeCompany(company: company) {
+		if (!this.companies.includes(company)) return;
+		this.companies = this.companies.filter((elem) => elem != company);
+		this.updateCompaniesFinance();
 	}
 
-	private updateStart() {
-		this.loading = true;
-	}
-
-	private updateDone() {
-		this.updateCompareData();
-		this.loading = false;
+	updatePeriod(period: period) {
+		this.period = period;
 	}
 }
 

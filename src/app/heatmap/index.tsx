@@ -11,14 +11,16 @@ import { period, company } from "./datatype";
 import AppLayout from "./ui/design/layout";
 import { heatmapIntro } from "../../subflow/main";
 import proxyAlertError from "../common/proxyHandler/alertError";
+import { allIndexs } from "./state/constant";
+import { availablePeriod } from "./state/constant/period";
 
 function FiHeatmapApp() {
 	return (
 		<AppLayout
 			indexElem={
 				<IndexContainer
-					allIndexs={fsHeatmap.allIndexs()}
-					selectedIndexs={fsHeatmap.selectedIndexs()}
+					allIndexs={allIndexs}
+					selectedIndexs={fsHeatmap.indexes}
 					onSelectIndex={(index) => fsHeatmap.addIndex(index)}
 					onUnSelectIndex={(index) => fsHeatmap.removeIndex(index)}
 				/>
@@ -29,8 +31,8 @@ function FiHeatmapApp() {
 						companySearch.getCompaniesWithNameContains(token)
 					}
 					onSelectCompany={
-						new Proxy(async (company: company) => {
-							await fsHeatmap.addCompany(company);
+						new Proxy((company: company) => {
+							fsHeatmap.addCompany(company);
 						}, proxyAlertError)
 					}
 					companiesSearched={companySearch.companiesSearched}
@@ -49,12 +51,12 @@ function FiHeatmapApp() {
 			periodElem={
 				<PeriodContainer
 					onUpdatePeriod={
-						new Proxy(async (period: period) => {
-							await fsHeatmap.updatePeriod(period);
+						new Proxy((period: period) => {
+							fsHeatmap.updatePeriod(period);
 						}, proxyAlertError)
 					}
-					period={fsHeatmap.selectedPeriod()}
-					availablePeriod={fsHeatmap.availablePeriod()}
+					period={fsHeatmap.period}
+					availablePeriod={availablePeriod}
 				/>
 			}
 			extraElem={

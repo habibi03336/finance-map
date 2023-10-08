@@ -32,7 +32,7 @@ export type fsHeatmapData = {
 	rows: indexRow[];
 };
 
-export type companyRoot = {
+export type companyFinance = {
 	tag: company;
 	rootData: rootData;
 };
