@@ -5,11 +5,11 @@ import { RawQuarter } from "@/app/common/dto/RawQuarter";
 class PeriodServiceImpl implements PeriodService {
 	private periodAvailable: period = {
 		start: new RawQuarter(2016, 1),
-		end: new RawQuarter(2023, 1),
+		end: RawQuarter.mostLatestQuarterAvailable(),
 	};
 	private periodChosen: period = {
 		start: new RawQuarter(2021, 1),
-		end: new RawQuarter(2022, 4),
+		end: RawQuarter.mostLatestQuarterAvailable(1),
 	};
 
 	availablePeriod() {

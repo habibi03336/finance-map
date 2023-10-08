@@ -7,13 +7,13 @@ class PeriodManagerServiceImpl implements PeriodManagerService {
 	#period: period;
 
 	constructor() {
-		this.#period = {
-			start: new RawQuarter(2022, 1),
-			end: new RawQuarter(2022, 4),
-		};
 		this.#availablePeriod = {
 			start: new RawQuarter(2016, 1),
-			end: new RawQuarter(2023, 1),
+			end: RawQuarter.mostLatestQuarterAvailable(),
+		};
+		this.#period = {
+			start: new RawQuarter(2021, 1),
+			end: RawQuarter.mostLatestQuarterAvailable(1),
 		};
 	}
 
