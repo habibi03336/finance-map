@@ -73,6 +73,7 @@ class HeatmapImpl implements Heatmap {
 
 	updatePeriod(period: period) {
 		this.period = period;
+		this.updateCompaniesFinance();
 	}
 }
 
