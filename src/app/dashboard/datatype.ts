@@ -33,3 +33,7 @@ export type barchart = {
 	index: financeIndex;
 	groups: group[];
 };
+
+export type color = {
+	color: string;
+};

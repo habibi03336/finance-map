@@ -1,15 +1,13 @@
 import {
 	barchart,
 	company,
+	finance,
 	financeIndex,
 	period,
 } from "@/app/dashboard/datatype";
 import DataService from "./DataService";
 import CompanyFinanceRepository from "../../repository/CompanyFinanceRepository";
 import calculateFinance from "./calculateFinance";
-
-const colors = ["#FF6347", "#77DD77", "#789FCC"];
-const companyColorMap = new Map<string, string>();
 
 class DataServiceImpl implements DataService {
 	private companyFinanceRepository: CompanyFinanceRepository;
@@ -18,21 +16,18 @@ class DataServiceImpl implements DataService {
 		this.companyFinanceRepository = cfr;
 	}
 
-	async generateDashboard(
-		companies: company[],
-		index: financeIndex,
-		period: period
+	generateDashboard(
+		finances: finance[][],
+		colors: string[],
+		index: financeIndex
 	) {
 		const dashboard: barchart = {
 			index: index,
 			groups: [],
 		};
-		let i = 0;
-		for (let company of companies) {
-			const finance = await this.companyFinanceRepository.getCompanyFinance(
-				company,
-				period
-			);
+		for (let i = 0; i < finances.length; i += 1) {
+			const finance = finances[i];
+			const company = finance[0].company;
 			dashboard.groups.push({
 				company: company,
 				data: finance.map((elem) => {
@@ -41,20 +36,26 @@ class DataServiceImpl implements DataService {
 						yData: calculateFinance(index, elem),
 					};
 				}),
-				color: companyColorMap.get(company.companyCode) || colors[i % 3],
+				color: colors[i],
 			});
 			i += 1;
 		}
 		return dashboard;
 	}
 
-	changeCompanyColor(barchart: barchart, company: company, color: string) {
-		companyColorMap.set(company.companyCode, color);
-		for (let group of barchart.groups) {
-			if (group.company.companyCode === company.companyCode) {
-				group.color = color;
-			}
+	async getCompaniesFinances(
+		companies: company[],
+		period: period
+	): Promise<finance[][]> {
+		const finances = [];
+		for (let company of companies) {
+			const finance = await this.companyFinanceRepository.getCompanyFinance(
+				company,
+				period
+			);
+			finances.push(finance);
 		}
+		return finances;
 	}
 }
 

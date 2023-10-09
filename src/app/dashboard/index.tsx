@@ -13,17 +13,19 @@ import { company, financeIndex, period } from "./datatype";
 import { RawQuarter } from "../common/dto/RawQuarter";
 import proxyAlertError from "../common/proxyHandler/alertError";
 import { dashboardIntro } from "@/subflow/main";
+import { allFinanceIndexs } from "./constant";
+import { availablePeriod } from "./constant/period";
 
 function Dashboard() {
 	return (
 		<Layout
 			indexKeyPadElem={
 				<KeyPadContainer
-					options={dashboard.availableIndexs().map((index) => {
+					options={allFinanceIndexs.map((index) => {
 						return {
 							key: index,
 							name: index,
-							selected: index === dashboard.selectedIndex(),
+							selected: index === dashboard.index,
 						};
 					})}
 					onClickOption={(key: string) => {
@@ -72,7 +74,7 @@ function Dashboard() {
 				<BarChart
 					title={dashboard.dashboard ? dashboard.dashboard.index : ""}
 					labels={(() => {
-						const period = dashboard.selectedPeriod();
+						const period = dashboard.period;
 						const quarters = RawQuarter.getAllQuartersBetween(
 							period.start,
 							period.end
@@ -92,8 +94,8 @@ function Dashboard() {
 						}
 						return datasets;
 					})()}
-					yTickFormat={dashboard.getIndexFormatter()}
-					unit={dashboard.getIndexFormatUnit()}
+					yTickFormat={dashboard.indexFormatter}
+					unit={dashboard.indexUnit}
 				/>
 			}
 			periodElem={
@@ -105,12 +107,12 @@ function Dashboard() {
 						)
 					}
 					availablePeriod={{
-						start: dashboard.avaiablePeriod().start,
-						end: dashboard.avaiablePeriod().end,
+						start: availablePeriod.start,
+						end: availablePeriod.end,
 					}}
 					period={{
-						start: dashboard.selectedPeriod().start,
-						end: dashboard.selectedPeriod().end,
+						start: dashboard.period.start,
+						end: dashboard.period.end,
 					}}
 				/>
 			}

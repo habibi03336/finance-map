@@ -3,13 +3,11 @@ import { financeIndex, company, period, barchart } from "../../datatype";
 export default interface DashboardController {
 	dashboard: barchart | null;
 	loading: boolean;
-	selectedCompanies: () => company[];
-	selectedIndex: () => financeIndex;
-	getIndexFormatter: () => (num: number) => string;
-	getIndexFormatUnit: () => string;
-	availableIndexs: () => financeIndex[];
-	selectedPeriod: () => period;
-	avaiablePeriod: () => period;
+	companies: company[];
+	index: financeIndex;
+	indexUnit: string;
+	period: period;
+	indexFormatter: (num: number) => string;
 	addCompany: (company: company) => void;
 	removeCompany: (company: company) => void;
 	selectPeriod: (period: period) => void;

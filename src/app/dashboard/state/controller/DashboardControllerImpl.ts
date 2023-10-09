@@ -1,122 +1,92 @@
 import { makeAutoObservable } from "mobx";
-import { barchart, company, financeIndex, period } from "../../datatype";
-import CompanyService from "../service/company/CompanyService";
+import {
+	barchart,
+	color,
+	company,
+	finance,
+	financeIndex,
+	period,
+} from "../../datatype";
 import DataService from "../service/data/DataService";
 import IndexService from "../service/index/IndexService";
-import PeriodService from "../service/period/PeriodService";
 import DashboardController from "./DashboardController";
+import { defaultPeriod } from "../../constant/period";
 
 class DashboardControllerImpl implements DashboardController {
-	private cs: CompanyService;
-	private is: IndexService;
-	private ps: PeriodService;
-	private ds: DataService;
-	dashboard: barchart | null = null;
+	public companies: (company & color)[] = [];
+	public index: financeIndex = "영업이익";
+	public period: period = defaultPeriod;
+	private finances: finance[][] = [];
+	private dataService: DataService;
+	private indexService: IndexService;
+	private companyColors: string[] = ["#FF6347", "#77DD77", "#789FCC"];
+
 	loading: boolean = false;
-	constructor(
-		cs: CompanyService,
-		is: IndexService,
-		ps: PeriodService,
-		ds: DataService
-	) {
-		this.cs = cs;
-		this.is = is;
-		this.ps = ps;
-		this.ds = ds;
+	constructor(ds: DataService, is: IndexService) {
+		this.indexService = is;
+		this.dataService = ds;
 		makeAutoObservable(this);
-		return new Proxy(this, {
-			get(target, prop) {
-				if (
-					prop === "addCompany" ||
-					prop === "removeCompany" ||
-					prop === "selectPeriod" ||
-					prop === "selectIndex"
-				) {
-					return async function (...args: any[]) {
-						target.loading = true;
-						const priorIndex = target.selectedIndex();
-						const priorPeriod = target.selectedPeriod();
-						try {
-							target[prop](args[0]);
-							target.dashboard = await target.ds.generateDashboard(
-								target.selectedCompanies(),
-								target.selectedIndex(),
-								target.selectedPeriod()
-							);
-						} catch (e) {
-							if (prop === "addCompany") {
-								target.removeCompany(args[0]);
-							}
-							if (prop === "selectPeriod") {
-								target.selectPeriod(priorPeriod);
-							}
-							if (prop === "selectIndex") {
-								target.selectIndex(priorIndex);
-							}
-							if (prop === "removeCompany") {
-								target.addCompany(args[0]);
-							}
-							throw e;
-						} finally {
-							target.loading = false;
-						}
-					};
-				}
-				return target[
-					prop as
-						| "selectedCompanies"
-						| "selectedIndex"
-						| "availableIndexs"
-						| "selectedPeriod"
-						| "avaiablePeriod"
-						| "getIndexFormatter"
-						| "getIndexFormatUnit"
-				];
-			},
+	}
+
+	get dashboard(): barchart {
+		return this.dataService.generateDashboard(
+			this.finances,
+			this.companies.map((elem) => elem.color),
+			this.index
+		);
+	}
+
+	get indexFormatter() {
+		return this.indexService.getFormatter(this.index);
+	}
+
+	get indexUnit() {
+		return this.indexService.getUnit(this.index);
+	}
+
+	private async updateCompaniesFinances() {
+		this.loading = true;
+		this.finances = await this.dataService.getCompaniesFinances(
+			this.companies,
+			this.period
+		);
+		this.loading = false;
+	}
+
+	async addCompany(company: company) {
+		if (
+			this.companies.some((elem) => elem.companyCode === company.companyCode)
+		) {
+			return;
+		}
+		this.companies.push({
+			...company,
+			color:
+				this.companyColors[this.companies.length % this.companyColors.length],
 		});
-	}
-
-	selectedCompanies() {
-		return this.cs.selectedCompany();
-	}
-	selectedIndex() {
-		return this.is.selectedIndex();
-	}
-	availableIndexs() {
-		return this.is.availableIndex();
-	}
-
-	selectedPeriod() {
-		return this.ps.selectedPeriod();
-	}
-	avaiablePeriod() {
-		return this.ps.availablePeriod();
-	}
-
-	addCompany(company: company) {
-		this.cs.addCompany(company);
+		await this.updateCompaniesFinances();
 	}
 	removeCompany(company: company) {
-		this.cs.removeCompany(company);
+		this.companies = this.companies.filter(
+			(elem) => elem.companyCode !== company.companyCode
+		);
+		this.finances = this.finances.filter(
+			(elem) => elem[0].company.companyCode !== company.companyCode
+		);
 	}
 	selectPeriod(period: period) {
-		this.ps.updatePeriod(period);
+		this.period = period;
+		this.updateCompaniesFinances();
 	}
 	selectIndex(index: financeIndex) {
-		this.is.selectIndex(index);
+		this.index = index;
 	}
 
 	changeCompanyColor(company: company, color: string) {
-		if (this.dashboard) {
-			this.ds.changeCompanyColor(this.dashboard, company, color);
-		}
-	}
-
-	getIndexFormatter() {
-		return this.is.selectedIndexFormatter();
-	}
-	getIndexFormatUnit() {
-		return this.is.selectedIndexUnit();
+		const findCompany = this.companies.find(
+			(elem) => elem.companyCode === company.companyCode
+		);
+		if (findCompany) findCompany.color = color;
 	}
 }
 

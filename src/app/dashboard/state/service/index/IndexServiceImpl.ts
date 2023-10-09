@@ -24,33 +24,11 @@ const indexUnitMap = new Map<financeIndex, string>([
 ]);
 
 class IndexServiceImpl implements IndexService {
-	private indexChosen: financeIndex = "매출";
-	private indexs: financeIndex[] = [
-		"매출",
-		"영업이익",
-		"순이익",
-		"영업이익률",
-		"자본",
-		"부채",
-		"현금성자산",
-		"ROE",
-	];
-
-	selectedIndexFormatter() {
-		return indexFormatterMap.get(this.indexChosen)!;
+	getFormatter(index: financeIndex) {
+		return indexFormatterMap.get(index)!;
 	}
-	selectedIndexUnit() {
-		return indexUnitMap.get(this.indexChosen)!;
-	}
-
-	selectedIndex() {
-		return this.indexChosen;
-	}
-	availableIndex() {
-		return [...this.indexs];
-	}
-	selectIndex(index: financeIndex) {
-		this.indexChosen = index;
+	getUnit(index: financeIndex) {
+		return indexUnitMap.get(index)!;
 	}
 }
 
