@@ -44,11 +44,11 @@ class DashboardControllerImpl implements DashboardController {
 		return this.indexService.getUnit(this.index);
 	}
 
-	private async updateCompaniesFinances() {
+	private async updateCompaniesFinances(companies: company[], period: period) {
 		this.loading = true;
 		this.finances = await this.dataService.getCompaniesFinances(
-			this.companies,
-			this.period
+			companies,
+			period
 		);
 		this.loading = false;
 	}
@@ -65,7 +65,7 @@ class DashboardControllerImpl implements DashboardController {
 				this.companyColors[this.companies.length % this.companyColors.length],
 		});
 		try {
-			await this.updateCompaniesFinances();
+			await this.updateCompaniesFinances(this.companies, this.period);
 		} catch (e) {
 			this.companies.pop();
 			throw e;
@@ -82,14 +82,8 @@ class DashboardControllerImpl implements DashboardController {
 	}
 
 	async selectPeriod(period: period) {
-		const tmp = this.period;
+		await this.updateCompaniesFinances(this.companies, period);
 		this.period = period;
-		try {
-			await this.updateCompaniesFinances();
-		} catch (e) {
-			this.period = tmp;
-			throw e;
-		}
 	}
 
 	selectIndex(index: financeIndex) {
