@@ -41,12 +41,15 @@ class HeatmapImpl implements Heatmap {
 
 	async updateCompaniesFinance() {
 		this.loading = true;
-		this.companiesFinance =
-			await this.#companyFinanceFetcher.getCompaniesFinance(
-				this.companies,
-				this.period
-			);
-		this.loading = false;
+		try {
+			this.companiesFinance =
+				await this.#companyFinanceFetcher.getCompaniesFinance(
+					this.companies,
+					this.period
+				);
+		} finally {
+			this.loading = false;
+		}
 	}
 
 	addIndex(index: index) {
@@ -59,10 +62,15 @@ class HeatmapImpl implements Heatmap {
 		this.indexes = this.indexes.filter((elem) => elem != index);
 	}
 
-	addCompany(company: company) {
+	async addCompany(company: company) {
 		if (this.companies.includes(company)) return;
 		this.companies.push(company);
-		this.updateCompaniesFinance();
+		try {
+			await this.updateCompaniesFinance();
+		} catch (e) {
+			this.companies.pop();
+			throw e;
+		}
 	}
 
 	removeCompany(company: company) {
@@ -71,9 +79,15 @@ class HeatmapImpl implements Heatmap {
 		this.updateCompaniesFinance();
 	}
 
-	updatePeriod(period: period) {
+	async updatePeriod(period: period) {
+		const tmp = this.period;
 		this.period = period;
-		this.updateCompaniesFinance();
+		try {
+			await this.updateCompaniesFinance();
+		} catch (e) {
+			this.period = tmp;
+			throw e;
+		}
 	}
 }
 

@@ -41,7 +41,7 @@ function Dashboard() {
 					}
 					onSelectCompany={
 						new Proxy(
-							async (company: company) => dashboard.addCompany(company),
+							async (company: company) => await dashboard.addCompany(company),
 							proxyAlertError
 						)
 					}
@@ -102,7 +102,7 @@ function Dashboard() {
 				<PeriodContainer
 					onUpdatePeriod={
 						new Proxy(
-							async (period: period) => dashboard.selectPeriod(period),
+							async (period: period) => await dashboard.selectPeriod(period),
 							proxyAlertError
 						)
 					}

@@ -31,8 +31,8 @@ function FiHeatmapApp() {
 						companySearch.getCompaniesWithNameContains(token)
 					}
 					onSelectCompany={
-						new Proxy((company: company) => {
-							fsHeatmap.addCompany(company);
+						new Proxy(async (company: company) => {
+							await fsHeatmap.addCompany(company);
 						}, proxyAlertError)
 					}
 					companiesSearched={companySearch.companiesSearched}
@@ -51,8 +51,8 @@ function FiHeatmapApp() {
 			periodElem={
 				<PeriodContainer
 					onUpdatePeriod={
-						new Proxy((period: period) => {
-							fsHeatmap.updatePeriod(period);
+						new Proxy(async (period: period) => {
+							await fsHeatmap.updatePeriod(period);
 						}, proxyAlertError)
 					}
 					period={fsHeatmap.period}

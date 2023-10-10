@@ -64,8 +64,14 @@ class DashboardControllerImpl implements DashboardController {
 			color:
 				this.companyColors[this.companies.length % this.companyColors.length],
 		});
-		await this.updateCompaniesFinances();
+		try {
+			await this.updateCompaniesFinances();
+		} catch (e) {
+			this.companies.pop();
+			throw e;
+		}
 	}
+
 	removeCompany(company: company) {
 		this.companies = this.companies.filter(
 			(elem) => elem.companyCode !== company.companyCode
@@ -74,10 +80,18 @@ class DashboardControllerImpl implements DashboardController {
 			(elem) => elem[0].company.companyCode !== company.companyCode
 		);
 	}
-	selectPeriod(period: period) {
+
+	async selectPeriod(period: period) {
+		const tmp = this.period;
 		this.period = period;
-		this.updateCompaniesFinances();
+		try {
+			await this.updateCompaniesFinances();
+		} catch (e) {
+			this.period = tmp;
+			throw e;
+		}
 	}
+
 	selectIndex(index: financeIndex) {
 		this.index = index;
 	}
