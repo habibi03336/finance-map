@@ -10,11 +10,11 @@ import {
 import QuestionMarkIcon from "../common/ui/asset/QuestionMarkIcon";
 import Layout from "./ui/design/layout";
 import { company, financeIndex, period } from "./datatype";
-import { RawQuarter } from "../common/dto/RawQuarter";
+import Quarter from "../common/util/Quarter";
 import proxyAlertError from "../common/proxyHandler/alertError";
 import { dashboardIntro } from "@/subflow/main";
 import { allFinanceIndexs } from "./constant";
-import { availablePeriod } from "./constant/period";
+import { availablePeriod } from "../common/constant/period";
 
 function Dashboard() {
 	return (
@@ -75,7 +75,7 @@ function Dashboard() {
 					title={dashboard.dashboard ? dashboard.dashboard.index : ""}
 					labels={(() => {
 						const period = dashboard.period;
-						const quarters = RawQuarter.getAllQuartersBetween(
+						const quarters = Quarter.getAllQuartersBetween(
 							period.start,
 							period.end
 						);

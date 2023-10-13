@@ -1,10 +1,11 @@
 import DashboardControllerImpl from "./controller/DashboardControllerImpl";
 import IndexServiceImpl from "./service/index/IndexServiceImpl";
 import DataServiceImpl from "./service/data/DataServiceImpl";
-import CompanyFinanceRepositoryImpl from "./repository/CompanyFinanceRepositoryImpl";
+import { companiesFinancesByPeriodAndMarket } from "@/app/common/state";
 
 const dashboard = new DashboardControllerImpl(
-	new DataServiceImpl(new CompanyFinanceRepositoryImpl()),
+	companiesFinancesByPeriodAndMarket,
+	new DataServiceImpl(),
 	new IndexServiceImpl()
 );
 
