@@ -1,21 +1,8 @@
-import {
-	barchart,
-	company,
-	finance,
-	financeIndex,
-	period,
-} from "@/app/dashboard/datatype";
+import { barchart, finance, financeIndex } from "@/app/dashboard/datatype";
 import DataService from "./DataService";
-import CompanyFinanceRepository from "../../repository/CompanyFinanceRepository";
 import calculateFinance from "./calculateFinance";
 
 class DataServiceImpl implements DataService {
-	private companyFinanceRepository: CompanyFinanceRepository;
-
-	constructor(cfr: CompanyFinanceRepository) {
-		this.companyFinanceRepository = cfr;
-	}
-
 	generateDashboard(
 		finances: finance[][],
 		colors: string[],
@@ -38,24 +25,8 @@ class DataServiceImpl implements DataService {
 				}),
 				color: colors[i],
 			});
-			i += 1;
 		}
 		return dashboard;
-	}
-
-	async getCompaniesFinances(
-		companies: company[],
-		period: period
-	): Promise<finance[][]> {
-		const finances = [];
-		for (let company of companies) {
-			const finance = await this.companyFinanceRepository.getCompanyFinance(
-				company,
-				period
-			);
-			finances.push(finance);
-		}
-		return finances;
 	}
 }
 
