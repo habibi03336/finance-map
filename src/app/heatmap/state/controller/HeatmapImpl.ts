@@ -1,55 +1,44 @@
 import { makeAutoObservable } from "mobx";
-import AggregatorService from "../service/Aggregator/AggregatorService";
-import {
-	company,
-	period,
-	fsHeatmapData,
-	index,
-	companyFinance,
-} from "../../datatype";
+import HeatmapDataService from "../service/HeatmapDataService/HeatmapDataService";
+import { company, period, fsHeatmapData, index, market } from "../../datatype";
 import { Heatmap } from "./Heatmap";
-import CompanyFinanceFetcher from "../service/CompanyFinanceFetcher/CompanyFinanceFetcher";
-import { defaultPeriod } from "../constant/period";
 import { defaultIndexes } from "../constant";
+import CompaniesFinancesByPeriodAndMarket from "@/app/common/state/controller/CompaniesFinancesByPeriodAndMarket";
 
 class HeatmapImpl implements Heatmap {
-	public loading: boolean = false;
-	public period: period = defaultPeriod;
 	public indexes: index[] = defaultIndexes;
-	private companies: company[] = [];
-	private companiesFinance: companyFinance[] = [];
 
-	#aggregator: AggregatorService;
-	#companyFinanceFetcher: CompanyFinanceFetcher;
+	private heatmapDataService: HeatmapDataService;
+	private companiesFinancesByPeriodAndMarket: CompaniesFinancesByPeriodAndMarket;
 
 	constructor(
-		aggregator: AggregatorService,
-		companyFinanceFetcher: CompanyFinanceFetcher
+		companiesFinancesByPeriod: CompaniesFinancesByPeriodAndMarket,
+		heatmapDataService: HeatmapDataService
 	) {
-		this.#aggregator = aggregator;
-		this.#companyFinanceFetcher = companyFinanceFetcher;
+		this.companiesFinancesByPeriodAndMarket = companiesFinancesByPeriod;
+		this.heatmapDataService = heatmapDataService;
 		makeAutoObservable(this);
 	}
 
 	get FSdata(): fsHeatmapData {
-		const heatmapData = this.#aggregator.getFSData(
+		const heatmapData = this.heatmapDataService.generate(
 			this.indexes,
-			this.companiesFinance
+			this.companiesFinancesByPeriodAndMarket.finances,
+			this.companiesFinancesByPeriodAndMarket.markets
 		);
 		return heatmapData;
 	}
 
-	async updateCompaniesFinance() {
-		this.loading = true;
-		try {
-			this.companiesFinance =
-				await this.#companyFinanceFetcher.getCompaniesFinance(
-					this.companies,
-					this.period
-				);
-		} finally {
-			this.loading = false;
-		}
+	get loading() {
+		return this.companiesFinancesByPeriodAndMarket.loading;
+	}
+
+	get companies() {
+		return this.companiesFinancesByPeriodAndMarket.companies;
+	}
+
+	get period() {
+		return this.companiesFinancesByPeriodAndMarket.period;
 	}
 
 	addIndex(index: index) {
@@ -63,31 +52,15 @@ class HeatmapImpl implements Heatmap {
 	}
 
 	async addCompany(company: company) {
-		if (this.companies.includes(company)) return;
-		this.companies.push(company);
-		try {
-			await this.updateCompaniesFinance();
-		} catch (e) {
-			this.companies.pop();
-			throw e;
-		}
+		await this.companiesFinancesByPeriodAndMarket.addCompany(company);
 	}
 
 	removeCompany(company: company) {
-		if (!this.companies.includes(company)) return;
-		this.companies = this.companies.filter((elem) => elem != company);
-		this.updateCompaniesFinance();
+		this.companiesFinancesByPeriodAndMarket.removeCompany(company);
 	}
 
 	async updatePeriod(period: period) {
-		const tmp = this.period;
-		this.period = period;
-		try {
-			await this.updateCompaniesFinance();
-		} catch (e) {
-			this.period = tmp;
-			throw e;
-		}
+		await this.companiesFinancesByPeriodAndMarket.updatePeriod(period);
 	}
 }
 
