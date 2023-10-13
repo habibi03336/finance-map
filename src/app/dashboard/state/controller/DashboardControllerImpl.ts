@@ -1,28 +1,23 @@
 import { makeAutoObservable } from "mobx";
-import {
-	barchart,
-	color,
-	company,
-	finance,
-	financeIndex,
-	period,
-} from "../../datatype";
+import { barchart, color, company, financeIndex, period } from "../../datatype";
 import DataService from "../service/data/DataService";
 import IndexService from "../service/index/IndexService";
 import DashboardController from "./DashboardController";
-import { defaultPeriod } from "../../constant/period";
+import CompaniesFinancesByPeriodAndMarket from "@/app/common/state/controller/CompaniesFinancesByPeriodAndMarket";
 
 class DashboardControllerImpl implements DashboardController {
-	public companies: (company & color)[] = [];
 	public index: financeIndex = "영업이익";
-	public period: period = defaultPeriod;
-	private finances: finance[][] = [];
 	private dataService: DataService;
 	private indexService: IndexService;
 	private companyColors: string[] = ["#FF6347", "#77DD77", "#789FCC"];
+	private companiesFinancesByPeriod: CompaniesFinancesByPeriodAndMarket;
 
-	loading: boolean = false;
-	constructor(ds: DataService, is: IndexService) {
+	constructor(
+		companiesFinancesByPeriod: CompaniesFinancesByPeriodAndMarket,
+		ds: DataService,
+		is: IndexService
+	) {
+		this.companiesFinancesByPeriod = companiesFinancesByPeriod;
 		this.indexService = is;
 		this.dataService = ds;
 		makeAutoObservable(this);
@@ -30,8 +25,8 @@ class DashboardControllerImpl implements DashboardController {
 
 	get dashboard(): barchart {
 		return this.dataService.generateDashboard(
-			this.finances,
-			this.companies.map((elem) => elem.color),
+			this.companiesFinancesByPeriod.finances,
+			this.companyColors,
 			this.index
 		);
 	}
@@ -44,46 +39,32 @@ class DashboardControllerImpl implements DashboardController {
 		return this.indexService.getUnit(this.index);
 	}
 
-	private async updateCompaniesFinances(companies: company[], period: period) {
-		this.loading = true;
-		this.finances = await this.dataService.getCompaniesFinances(
-			companies,
-			period
-		);
-		this.loading = false;
+	get finances() {
+		return this.companiesFinancesByPeriod.finances;
+	}
+
+	get loading() {
+		return this.companiesFinancesByPeriod.loading;
+	}
+
+	get companies() {
+		return this.companiesFinancesByPeriod.companies;
+	}
+
+	get period() {
+		return this.companiesFinancesByPeriod.period;
 	}
 
 	async addCompany(company: company) {
-		if (
-			this.companies.some((elem) => elem.companyCode === company.companyCode)
-		) {
-			return;
-		}
-		this.companies.push({
-			...company,
-			color:
-				this.companyColors[this.companies.length % this.companyColors.length],
-		});
-		try {
-			await this.updateCompaniesFinances(this.companies, this.period);
-		} catch (e) {
-			this.companies.pop();
-			throw e;
-		}
+		await this.companiesFinancesByPeriod.addCompany(company);
 	}
 
 	removeCompany(company: company) {
-		this.companies = this.companies.filter(
-			(elem) => elem.companyCode !== company.companyCode
-		);
-		this.finances = this.finances.filter(
-			(elem) => elem[0].company.companyCode !== company.companyCode
-		);
+		this.companiesFinancesByPeriod.removeCompany(company);
 	}
 
 	async selectPeriod(period: period) {
-		await this.updateCompaniesFinances(this.companies, period);
-		this.period = period;
+		await this.companiesFinancesByPeriod.updatePeriod(period);
 	}
 
 	selectIndex(index: financeIndex) {
@@ -94,7 +75,7 @@ class DashboardControllerImpl implements DashboardController {
 		const findCompany = this.companies.find(
 			(elem) => elem.companyCode === company.companyCode
 		);
-		if (findCompany) findCompany.color = color;
+		// if (findCompany) findCompany.color = color;
 	}
 }
 
