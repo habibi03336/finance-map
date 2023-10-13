@@ -9,5 +9,4 @@ export interface Heatmap {
 	updatePeriod: (period: period) => void;
 	removeCompany: (company: company) => void;
 	addCompany: (company: company) => void;
-	updateCompaniesFinance: (companies: company[]) => void;
 }
