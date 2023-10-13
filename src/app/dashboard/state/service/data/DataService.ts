@@ -1,10 +1,4 @@
-import {
-	barchart,
-	company,
-	finance,
-	financeIndex,
-	period,
-} from "../../../datatype";
+import { barchart, finance, financeIndex } from "../../../datatype";
 
 export default interface DataService {
 	generateDashboard: (
@@ -12,8 +6,4 @@ export default interface DataService {
 		colors: string[],
 		index: financeIndex
 	) => barchart;
-	getCompaniesFinances: (
-		companies: company[],
-		period: period
-	) => Promise<finance[][]>;
 }

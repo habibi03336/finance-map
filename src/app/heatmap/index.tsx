@@ -12,7 +12,7 @@ import AppLayout from "./ui/design/layout";
 import { heatmapIntro } from "../../subflow/main";
 import proxyAlertError from "../common/proxyHandler/alertError";
 import { allIndexs } from "./state/constant";
-import { availablePeriod } from "./state/constant/period";
+import { availablePeriod } from "../common/constant/period";
 
 function FiHeatmapApp() {
 	return (
@@ -31,8 +31,8 @@ function FiHeatmapApp() {
 						companySearch.getCompaniesWithNameContains(token)
 					}
 					onSelectCompany={
-						new Proxy((company: company) => {
-							fsHeatmap.addCompany(company);
+						new Proxy(async (company: company) => {
+							await fsHeatmap.addCompany(company);
 						}, proxyAlertError)
 					}
 					companiesSearched={companySearch.companiesSearched}
@@ -51,8 +51,8 @@ function FiHeatmapApp() {
 			periodElem={
 				<PeriodContainer
 					onUpdatePeriod={
-						new Proxy((period: period) => {
-							fsHeatmap.updatePeriod(period);
+						new Proxy(async (period: period) => {
+							await fsHeatmap.updatePeriod(period);
 						}, proxyAlertError)
 					}
 					period={fsHeatmap.period}

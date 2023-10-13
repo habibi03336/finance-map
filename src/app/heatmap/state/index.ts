@@ -1,17 +1,15 @@
 import FsHeatmap from "./controller/HeatmapImpl";
-import AggregatorServiceImpl from "./service/Aggregator/AggregatorServiceImpl";
-import ScalarColorMapperImpl from "./service/Aggregator/module/ScalarColorMapperImpl";
-import CompanyRootRepositoryImpl from "./repository/CompanyRepositoryImpl";
-import CompanyFinanceFetcherImpl from "./service/CompanyFinanceFetcher/CompanyFinanceFetcherImpl";
+import HeatmapDataServiceImpl from "./service/HeatmapDataService/HeatmapDataServiceImpl";
+import ScalarColorMapperImpl from "./service/HeatmapDataService/module/ScalarColorMapperImpl";
+import { companiesFinancesByPeriodAndMarket } from "@/app/common/state";
 
 const scalarColorMapper = new ScalarColorMapperImpl();
 scalarColorMapper.setPositiveColor("#00994C");
 scalarColorMapper.setNegativeColor("#FF6666");
-const companyRootRepo = new CompanyRootRepositoryImpl();
 
 export const fsHeatmap = new FsHeatmap(
-	new AggregatorServiceImpl(scalarColorMapper),
-	new CompanyFinanceFetcherImpl(companyRootRepo)
+	companiesFinancesByPeriodAndMarket,
+	new HeatmapDataServiceImpl(scalarColorMapper)
 );
 
 export { companySearch } from "@/app/common/state";

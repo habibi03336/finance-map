@@ -1,14 +1,13 @@
-import { AxiosRequestHeaders, AxiosResponse } from "axios";
 import financeApiClient from "./financeApiClient";
 import stockApiClient from "./stockApiClient";
 
-interface companyTag {
+interface company {
 	companyCode: string;
 	name: string;
 	stockCode: string;
 }
 interface companyFinance {
-	company: companyTag;
+	company: company;
 	year: number;
 	quarter: number;
 	equity: number | null;
@@ -38,4 +37,4 @@ export const GET_COMPANY_STOCK = (stockCode: string) =>
 	stockApiClient.get<companyStock>(`?stockCode=${stockCode}`);
 
 export const GET_COMPANY_SEARCH_BY_NAME = (token: string) =>
-	financeApiClient.get<companyTag[]>(`/company?token=${token}`);
+	financeApiClient.get<company[]>(`/company?token=${token}`);

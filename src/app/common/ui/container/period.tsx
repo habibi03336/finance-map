@@ -1,5 +1,5 @@
 import { period } from "../../datatype";
-import { RawQuarter } from "@/app/common/dto/RawQuarter";
+import Quarter from "@/app/common/util/Quarter";
 import { DesignSelectComponent, DesignComponent } from "../componentType";
 
 export default function ({
@@ -40,10 +40,10 @@ export default function ({
 						onChange={(e) => {
 							onUpdatePeriod({
 								...period,
-								start: new RawQuarter(
-									Number(e.target.value),
-									period.start.quarter
-								),
+								start: {
+									...period.start,
+									year: Number(e.target.value),
+								},
 							});
 						}}
 					>
@@ -59,10 +59,10 @@ export default function ({
 						onChange={(e) => {
 							onUpdatePeriod({
 								...period,
-								start: new RawQuarter(
-									period.start.year,
-									Number(e.target.value) as 1 | 2 | 3 | 4
-								),
+								start: {
+									...period.start,
+									quarter: Number(e.target.value) as 1 | 2 | 3 | 4,
+								},
 							});
 						}}
 					>
@@ -80,7 +80,10 @@ export default function ({
 						onChange={(e) => {
 							onUpdatePeriod({
 								...period,
-								end: new RawQuarter(Number(e.target.value), period.end.quarter),
+								end: {
+									...period.end,
+									year: Number(e.target.value),
+								},
 							});
 						}}
 					>
@@ -96,10 +99,10 @@ export default function ({
 						onChange={(e) => {
 							onUpdatePeriod({
 								...period,
-								end: new RawQuarter(
-									period.end.year,
-									Number(e.target.value) as 1 | 2 | 3 | 4
-								),
+								end: {
+									...period.end,
+									quarter: Number(e.target.value) as 1 | 2 | 3 | 4,
+								},
 							});
 						}}
 					>

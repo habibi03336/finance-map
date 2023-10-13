@@ -1,11 +1,11 @@
-import { RawQuarter } from "@/app/common/dto/RawQuarter";
+import Quarter from "@/app/common/util/Quarter";
 import { company, period } from "../../datatype";
 import CompanyFinanceRepository from "./CompanyFinanceRepository";
 import { GET_COMPANY_FINANCE } from "@/api/company";
 
 class CompanyFinanceRepositoryImpl implements CompanyFinanceRepository {
-	async getCompanyFinance(company: company, period: period) {
-		const quarters = RawQuarter.getAllQuartersBetween(period.start, period.end);
+	async getCompanyFinances(company: company, period: period) {
+		const quarters = Quarter.getAllQuartersBetween(period.start, period.end);
 		const _finances = await Promise.all(
 			quarters.map((q) =>
 				GET_COMPANY_FINANCE(company.companyCode, {
@@ -15,7 +15,7 @@ class CompanyFinanceRepositoryImpl implements CompanyFinanceRepository {
 			)
 		);
 		return _finances.map((elem, index) => {
-			return { ...elem.data, quarter: quarters[index], year: undefined };
+			return { ...elem.data, quarter: quarters[index] };
 		});
 	}
 }
