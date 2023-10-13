@@ -12,7 +12,7 @@ import AppLayout from "./ui/design/layout";
 import { heatmapIntro } from "../../subflow/main";
 import proxyAlertError from "../common/proxyHandler/alertError";
 import { allIndexs } from "./state/constant";
-import { availablePeriod } from "./state/constant/period";
+import { availablePeriod } from "../common/constant/period";
 
 function FiHeatmapApp() {
 	return (

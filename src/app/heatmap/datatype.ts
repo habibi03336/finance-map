@@ -5,7 +5,7 @@ import {
 	financeMarketIndex,
 } from "../common/datatype";
 
-export type { company, period, unit } from "../common/datatype";
+export type { company, period, unit, market } from "../common/datatype";
 
 export type index = financeIndex | marketIndex | financeMarketIndex;
 
@@ -13,8 +13,6 @@ export type indexRow = {
 	title: index;
 	data: cellData[];
 };
-
-export type cellData = { color: string; data: string };
 
 export type rootData = {
 	companyCode: string;
@@ -27,12 +25,9 @@ export type rootData = {
 	operatingProfit: number | null;
 };
 
+export type cellData = { color: string; data: string };
+
 export type fsHeatmapData = {
 	companies: company[];
 	rows: indexRow[];
-};
-
-export type companyFinance = {
-	tag: company;
-	rootData: rootData;
 };
