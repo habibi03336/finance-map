@@ -27,12 +27,15 @@ class Quarter {
 		let year = now.getFullYear();
 		let quarter: 1 | 2 | 3 | 4 = 1;
 		const month = now.getMonth() - monthOffset;
-		if (month < 3) {
+		if (month < 4) {
+			year -= 1;
+			quarter = 3;
+		} else if (month < 6) {
 			year -= 1;
 			quarter = 4;
-		} else if (month < 6) {
-			quarter = 1;
 		} else if (month < 9) {
+			quarter = 1;
+		} else if (month < 12) {
 			quarter = 2;
 		} else {
 			quarter = 3;
