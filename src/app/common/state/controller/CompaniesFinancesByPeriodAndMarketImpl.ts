@@ -83,15 +83,14 @@ class CompaniesFinancesByPeriodAndMarketImpl
 	}
 
 	removeCompany(company: company) {
-		this.companies = this.companies.filter(
-			(elem) => elem.companyCode !== company.companyCode
+		const removeIdx = this.companies.findIndex(
+			(elem) => elem.companyCode === company.companyCode
 		);
-		this.finances = this.finances.filter(
-			(elem) => elem[0].company.companyCode !== company.companyCode
-		);
-		this.markets = this.markets.filter(
-			(elem) => elem.stockCode != company.stockCode
-		);
+		if (removeIdx == -1) return;
+
+		this.companies = this.companies.filter((e, i) => i != removeIdx);
+		this.finances = this.finances.filter((e, i) => i != removeIdx);
+		this.markets = this.markets.filter((e, i) => i != removeIdx);
 	}
 
 	async updatePeriod(period: period) {
