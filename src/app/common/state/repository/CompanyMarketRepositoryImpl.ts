@@ -4,7 +4,14 @@ import { CompanyMarketRepository } from "./CompanyMarketRepository";
 class CompanyMarketRepositoryImpl implements CompanyMarketRepository {
 	async getCompanyMarketData(stockCode: string) {
 		const res = await GET_COMPANY_STOCK(stockCode);
-		return res.data;
+		return res.status == 200
+			? res.data
+			: {
+					stockCode: stockCode,
+					stockPrice: null,
+					stockAmount: null,
+					marketCap: null,
+			  };
 	}
 }
 
