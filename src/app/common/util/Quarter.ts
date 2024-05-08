@@ -26,7 +26,7 @@ class Quarter {
 		const now = new Date();
 		let year = now.getFullYear();
 		let quarter: 1 | 2 | 3 | 4 = 1;
-		const month = now.getMonth() - monthOffset;
+		const month = now.getMonth() - monthOffset + 1;
 		if (month < 4) {
 			year -= 1;
 			quarter = 3;
