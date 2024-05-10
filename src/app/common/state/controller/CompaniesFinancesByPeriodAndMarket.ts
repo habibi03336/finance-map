@@ -2,8 +2,8 @@ import { company, period, finance, market } from "../../datatype";
 
 interface CompaniesFinancesByPeriodAndMarket {
 	loading: boolean;
-	companies: company[];
 	period: period;
+	companies: company[];
 	finances: finance[][];
 	markets: market[];
 	addCompany: (company: company) => Promise<void>;

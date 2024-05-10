@@ -10,8 +10,8 @@ class CompaniesFinancesByPeriodAndMarketImpl
 	implements CompaniesFinancesByPeriodAndMarket
 {
 	public loading: boolean = false;
-	public companies: company[] = [];
 	public period: period = defaultPeriod;
+	public companies: company[] = [];
 	public finances: finance[][] = [];
 	public markets: market[] = [];
 
@@ -30,14 +30,10 @@ class CompaniesFinancesByPeriodAndMarketImpl
 	async fetchNewCompanyFinancesAndMarket(company: company) {
 		this.loading = true;
 		try {
-			const finances = await this.financeRepo.getCompanyFinances(
-				company,
-				this.period
-			);
-
-			const market = await this.marketRepo.getCompanyMarketData(
-				company.stockCode
-			);
+			const [finances, market] = await Promise.all([
+				this.financeRepo.getCompanyFinances(company, this.period),
+				this.marketRepo.getCompanyMarketData(company.stockCode),
+			]);
 			runInAction(() => {
 				this.loading = false;
 				this.finances.push(finances);
@@ -97,4 +93,5 @@ class CompaniesFinancesByPeriodAndMarketImpl
 		await this.updateFinancesByPeriod(period);
 	}
 }
+
 export default CompaniesFinancesByPeriodAndMarketImpl;
