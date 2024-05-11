@@ -1,5 +1,5 @@
 import Quarter from "@/app/common/util/Quarter";
-import { company, period } from "../../datatype";
+import { company, period, errorBody } from "../../datatype";
 import CompanyFinanceRepository from "./CompanyFinanceRepository";
 import { GET_COMPANY_FINANCE } from "@/api/company";
 
@@ -15,7 +15,24 @@ class CompanyFinanceRepositoryImpl implements CompanyFinanceRepository {
 			)
 		);
 		return _finances.map((elem, index) => {
-			return { ...elem.data, quarter: quarters[index] };
+			if (elem.status === 200) {
+				return { ...elem.data, quarter: quarters[index] };
+			} else {
+				const error = elem.data as unknown as errorBody;
+				if (error.errorCode === "dne01") {
+					return {
+						company: company,
+						sales: null,
+						equity: null,
+						debt: null,
+						operatingProfit: null,
+						netProfit: null,
+						cashEquivalents: null,
+						quarter: quarters[index],
+					};
+				}
+				throw Error(error.message);
+			}
 		});
 	}
 }

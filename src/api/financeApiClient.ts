@@ -1,6 +1,9 @@
 import axios from "axios";
 const financeApiClient = axios.create({
 	baseURL: import.meta.env.VITE_FINANCE_API_ADDRESS,
+	validateStatus: function () {
+		return true; // always true, error handled by application code by status code
+	},
 });
 
 financeApiClient.interceptors.response.use(

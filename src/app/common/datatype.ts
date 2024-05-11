@@ -37,3 +37,8 @@ export type market = {
 	stockAmount: number | null;
 	marketCap: number | null;
 };
+
+export type errorBody = {
+	errorCode: string;
+	message: string;
+};
