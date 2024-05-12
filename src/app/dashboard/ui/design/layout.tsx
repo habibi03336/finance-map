@@ -49,7 +49,7 @@ export default ({
 					</div>
 				</div>
 			</div>
-			<div className="flex justify-between mx- my-3 fill-current">
+			<div className="flex justify-between mx- my-3 fill-current px-2 sm:px-1 md:px-0">
 				<label htmlFor="financeDataSourceDetailModal" className="btn indexElem">
 					재무제표 출처 상세
 				</label>
