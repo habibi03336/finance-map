@@ -1,4 +1,5 @@
 import introduce from "./introduce";
+import modal from "./modal";
 
 const Introduce = introduce({
 	stageClassName: "absolute top-0 w-full h-full z-30",
@@ -9,6 +10,20 @@ const Introduce = introduce({
 		"absolute rounded-lg top-0 w-full h-full bg-base-300 opacity-80",
 	tooltipClassName:
 		"text-sm md:text-base font-normal w-fit h-fit absolute top-0 left-0 bottom-0 right-0 m-auto p-2 bg-base-300 text-center",
+});
+
+export const subflowModal = modal({
+	stageClassName: "absolute top-0 w-full h-full z-30",
+	buttonDivClassName: "absolute top-0.5 right-1",
+	buttonAsset: `
+	<svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+		<path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6"/>
+	</svg>
+	`,
+	modalStageClassName:
+		"w-5/6 h-2/6 md:w-3/6 md:h-1/6 flex p-5 border-2 border-neutral rounded-lg bg-base-100 absolute top-0 left-0 bottom-0 right-0 m-auto z-40 font-normal italic leading-8 text-start",
+	curtainClassName:
+		"absolute rounded-lg top-0 w-full h-full bg-base-300 opacity-80",
 });
 
 export const heatmapIntro = async () => {
