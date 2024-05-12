@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const Div = styled.div.attrs({})``;
+const Div = styled.div``;
 
 const NavItem = ({
 	children,
@@ -37,12 +37,12 @@ const Link = () => (
 export default {
 	Div: styled.div.attrs({ className: "text-xs md:text-base" })``,
 	Nav: styled.div.attrs({ className: "tabs tab-lifted m-1" })``,
-	NavItem: NavItem,
+	NavItem: styled(NavItem).attrs({})``,
 	Table: styled.table.attrs({ className: "table w-full m-1" })``,
 	TableHead: styled.thead.attrs({})``,
 	TableBody: styled.tbody.attrs({})``,
 	TableRow: styled.tr.attrs({})``,
 	Th: styled.th.attrs({})``,
 	Td: styled.td.attrs({})``,
-	LinkSVG: Link,
+	LinkSVG: styled(Link).attrs({})``,
 };
