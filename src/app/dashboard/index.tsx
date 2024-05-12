@@ -7,7 +7,7 @@ import {
 	KeyPadContainer,
 	IndexFlag,
 } from "./ui";
-import QuestionMarkIcon from "../common/ui/asset/QuestionMarkIcon";
+import QuestionMarkIcon from "@/app/common/ui/asset/QuestionMarkIcon";
 import Layout from "./ui/design/layout";
 import { company, financeIndex, period } from "./datatype";
 import Quarter from "../common/util/Quarter";
@@ -117,14 +117,11 @@ function Dashboard() {
 				/>
 			}
 			introElem={
-				<div
-					className="w-full cursor-pointer w-7 h-7"
+				<QuestionMarkIcon
 					onClick={() => {
 						dashboardIntro();
 					}}
-				>
-					<QuestionMarkIcon />
-				</div>
+				/>
 			}
 		/>
 	);
