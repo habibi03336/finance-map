@@ -1,5 +1,4 @@
 import { period } from "../../datatype";
-import Quarter from "@/app/common/util/Quarter";
 import { DesignSelectComponent, DesignComponent } from "../componentType";
 
 export default function ({
