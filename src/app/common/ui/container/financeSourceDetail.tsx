@@ -93,6 +93,7 @@ export default function ({
 										<Td>
 											{e.reportCode && (
 												<a
+													target="_blank"
 													href={
 														"https://dart.fss.or.kr/dsaf001/main.do?rcpNo=" +
 														e.reportCode
