@@ -19,12 +19,12 @@ export type finance = {
 };
 
 export enum FinancialIndex {
-	SALES = "sales",
-	EQUITY = "equity",
-	DEBT = "debt",
-	OPERATING_PROFIT = "operatingProfit",
-	NET_PROFIT = "netProfit",
-	CASH_EQUIVALENTS = "cashEquivalents",
+	SALES = "sales-매출",
+	EQUITY = "equity-자본",
+	DEBT = "debt-부채",
+	OPERATING_PROFIT = "operatingProfit-영업이익",
+	NET_PROFIT = "netProfit-순이익",
+	CASH_EQUIVALENTS = "cashEquivalents-현금성자산",
 }
 
 export type unit = "%" | "원" | "백만원" | "억원" | "천주";
