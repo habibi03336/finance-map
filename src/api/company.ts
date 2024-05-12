@@ -8,6 +8,9 @@ interface company {
 }
 interface companyFinance {
 	company: company;
+	reportCode: string | null;
+	reportType: string | null;
+	currency: string | null;
 	year: number;
 	quarter: number;
 	equity: number | null;

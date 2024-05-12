@@ -1,5 +1,5 @@
 import Quarter from "@/app/common/util/Quarter";
-import { company, period, errorBody } from "../../datatype";
+import { company, period, errorBody } from "@/app/common/datatype";
 import CompanyFinanceRepository from "./CompanyFinanceRepository";
 import { GET_COMPANY_FINANCE } from "@/api/company";
 
@@ -22,6 +22,9 @@ class CompanyFinanceRepositoryImpl implements CompanyFinanceRepository {
 				if (error.errorCode === "dne01") {
 					return {
 						company: company,
+						reportCode: null,
+						reportType: null,
+						currency: null,
 						sales: null,
 						equity: null,
 						debt: null,

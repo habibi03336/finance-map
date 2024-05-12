@@ -7,6 +7,9 @@ export type quarter = { year: number; quarter: 1 | 2 | 3 | 4 };
 export type finance = {
 	company: company;
 	quarter: quarter;
+	currency: string | null;
+	reportCode: string | null;
+	reportType: string | null;
 	sales: number | null;
 	equity: number | null;
 	debt: number | null;
@@ -14,6 +17,15 @@ export type finance = {
 	netProfit: number | null;
 	cashEquivalents: number | null;
 };
+
+export enum FinancialIndex {
+	SALES = "sales",
+	EQUITY = "equity",
+	DEBT = "debt",
+	OPERATING_PROFIT = "operatingProfit",
+	NET_PROFIT = "netProfit",
+	CASH_EQUIVALENTS = "cashEquivalents",
+}
 
 export type unit = "%" | "원" | "백만원" | "억원" | "천주";
 
