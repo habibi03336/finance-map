@@ -4,12 +4,14 @@ export default function ({
 	fsElem,
 	periodElem,
 	extraElem,
+	dataDetailElem,
 }: {
 	indexElem: JSX.Element;
 	companySearchElem: JSX.Element;
 	fsElem: JSX.Element;
 	periodElem: JSX.Element;
 	extraElem: JSX.Element;
+	dataDetailElem: JSX.Element;
 }) {
 	return (
 		<>
@@ -33,18 +35,26 @@ export default function ({
 				</div>
 			</div>
 			<div className="flex justify-between mt-3">
-				<div className="hidden sm:block bottom-0 z-20 w-144">
+				<div className="hidden md:block bottom-0 z-20 w-144">
 					<div className="indexElem p-3 bg-base-300 rounded-lg grid grid-cols-3">
 						{indexElem}
 					</div>
 				</div>
-				<div className="sm:hidden p-3">
+				<div className="md:hidden pl-3">
 					<label htmlFor="indexModal" className="btn indexElem">
 						재무지표 수정
 					</label>
 				</div>
-				<div className="w-7 h-7 flex flex-end mx-6 my-3 fill-current">
-					{extraElem}
+				<div className="flex">
+					<label
+						htmlFor="financeDataSourceDetailModal"
+						className="btn indexElem"
+					>
+						재무제표 출처 상세
+					</label>
+					<div className="w-7 h-7 flex flex-end mx-6 my-3 fill-current">
+						{extraElem}
+					</div>
 				</div>
 			</div>
 			{/* company search modal when width is sm */}
@@ -74,6 +84,25 @@ export default function ({
 					</label>
 					<div className="modal-box bg-base-300 w-full">
 						<div className="bg-base-300 rounded-lg">{indexElem}</div>
+					</div>
+				</div>
+			</div>
+			{/* finance data source detail modal */}
+			<input
+				type="checkbox"
+				id="financeDataSourceDetailModal"
+				className="modal-toggle"
+			/>
+			<div className="modal">
+				<div className="indicator w-5/6 md:w-3/6">
+					<label
+						htmlFor="financeDataSourceDetailModal"
+						className="indicator-item badge badge-lg text-xl"
+					>
+						x
+					</label>
+					<div className="modal-box bg-base-300 min-w-full h-96">
+						<div className="">{dataDetailElem}</div>
 					</div>
 				</div>
 			</div>

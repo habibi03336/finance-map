@@ -59,6 +59,7 @@ function FiHeatmapApp() {
 					availablePeriod={availablePeriod}
 				/>
 			}
+			dataDetailElem={<div></div>}
 			extraElem={
 				<div className="w-full cursor-pointer" onClick={() => heatmapIntro()}>
 					<QuestionMarkIcon />
