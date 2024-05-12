@@ -15,6 +15,7 @@ import proxyAlertError from "../common/proxyHandler/alertError";
 import { dashboardIntro } from "@/subflow/main";
 import { allFinanceIndexs } from "./constant";
 import { availablePeriod } from "../common/constant/period";
+import { FinanceSourceDetailContainer } from "../common/ui";
 
 function Dashboard() {
 	return (
@@ -116,7 +117,9 @@ function Dashboard() {
 					}}
 				/>
 			}
-			dataDetailElem={<div></div>}
+			dataDetailElem={
+				<FinanceSourceDetailContainer finances={dashboard.finances} />
+			}
 			introElem={
 				<QuestionMarkIcon
 					onClick={() => {

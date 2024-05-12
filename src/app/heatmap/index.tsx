@@ -1,5 +1,9 @@
 import { observer } from "mobx-react-lite";
-import { fsHeatmap, companySearch } from "./state";
+import {
+	fsHeatmap,
+	companySearch,
+	companiesFinancesByPeriodAndMarket,
+} from "./state";
 import {
 	CompanySearchContainer,
 	IndexContainer,
@@ -13,6 +17,7 @@ import { heatmapIntro } from "../../subflow/main";
 import proxyAlertError from "../common/proxyHandler/alertError";
 import { allIndexs } from "./state/constant";
 import { availablePeriod } from "../common/constant/period";
+import { FinanceSourceDetailContainer } from "../common/ui";
 
 function FiHeatmapApp() {
 	return (
@@ -59,7 +64,11 @@ function FiHeatmapApp() {
 					availablePeriod={availablePeriod}
 				/>
 			}
-			dataDetailElem={<div></div>}
+			dataDetailElem={
+				<FinanceSourceDetailContainer
+					finances={companiesFinancesByPeriodAndMarket.finances}
+				/>
+			}
 			extraElem={
 				<div className="w-full cursor-pointer" onClick={() => heatmapIntro()}>
 					<QuestionMarkIcon />

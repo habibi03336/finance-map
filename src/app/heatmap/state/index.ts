@@ -13,3 +13,5 @@ export const fsHeatmap = new FsHeatmap(
 );
 
 export { companySearch } from "@/app/common/state";
+
+export { companiesFinancesByPeriodAndMarket } from "@/app/common/state";
