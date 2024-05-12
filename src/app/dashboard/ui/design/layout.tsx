@@ -61,7 +61,7 @@ export default ({
 				<div className="indicator w-5/6">
 					<label
 						htmlFor="companySearchModal"
-						className="indicator-item badge badge-lg text-xl"
+						className="indicator-item badge badge-lg text-xl cursor-pointer"
 					>
 						x
 					</label>
@@ -80,7 +80,7 @@ export default ({
 				<div className="indicator w-5/6 md:w-3/6">
 					<label
 						htmlFor="financeDataSourceDetailModal"
-						className="indicator-item badge badge-lg text-xl"
+						className="indicator-item badge badge-lg text-xl cursor-pointer"
 					>
 						x
 					</label>
