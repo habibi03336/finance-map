@@ -1,10 +1,10 @@
 import { observer } from "mobx-react-lite";
 import { dashboard, companySearch } from "./state";
-import BarChart from "./ui/presentation/barChart";
 import {
 	PeriodContainer,
 	CompanySearchContainer,
 	KeyPadContainer,
+	DashboadContainer,
 	IndexFlag,
 } from "./ui";
 import QuestionMarkIcon from "@/app/common/ui/asset/QuestionMarkIcon";
@@ -72,7 +72,8 @@ function Dashboard() {
 				/>
 			}
 			chartElem={
-				<BarChart
+				<DashboadContainer
+					loading={dashboard.loading}
 					title={dashboard.dashboard ? dashboard.dashboard.index : ""}
 					labels={(() => {
 						const period = dashboard.period;

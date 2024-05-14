@@ -36,7 +36,9 @@ export default ({
 			</div>
 			<div className="grid grid-rows-1 grid-cols-6 gap-3">
 				<div className="chartElem col-span-6 sm:col-span-4 row-span-1 bg-base-300 p-3 mt-3 rounded-lg overflow-x-auto">
-					<div style={{ minHeight: "24rem" }}>{chartElem}</div>
+					<div className="h-full" style={{ minHeight: "24rem" }}>
+						{chartElem}
+					</div>
 				</div>
 				<div className="col-span-6 sm:col-span-2 row-span-1 flex flex-col justify-end mt-3">
 					<div className="companySelectedElem h-full">

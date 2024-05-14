@@ -1,7 +1,10 @@
 import clickAndSelectAmongOptions from "./container/clickAndSelectAmongOptions";
 import optionsWithColorPallete from "./container/optionsWithColorPallete";
+import dashboard from "./container/dashboard";
 import * as keypad from "./design/keypad";
 import * as indexflag from "./design/indexflag";
+import LoadingIndicator from "@/app/common/ui/asset/LoadingIndicator";
+import styled from "styled-components";
 
 export const KeyPadContainer = clickAndSelectAmongOptions({
 	Div: keypad.Div,
@@ -10,5 +13,12 @@ export const KeyPadContainer = clickAndSelectAmongOptions({
 });
 
 export const IndexFlag = optionsWithColorPallete(indexflag);
+
+export const DashboadContainer = dashboard({
+	Div: styled.div.attrs({
+		className: "relative h-full",
+	})``,
+	LoadingIndicator: styled(LoadingIndicator)``,
+});
 
 export { PeriodContainer, CompanySearchContainer } from "@/app/common/ui";
