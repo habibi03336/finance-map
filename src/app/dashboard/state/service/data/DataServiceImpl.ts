@@ -1,7 +1,6 @@
 import { barchart, finance, financeIndex } from "@/app/dashboard/datatype";
 import DataService from "./DataService";
-import calculateFinance from "./calculateFinance";
-
+import calculatorByIndex from "./calculatorByIndex";
 class DataServiceImpl implements DataService {
 	generateDashboard(
 		finances: finance[][],
@@ -13,6 +12,7 @@ class DataServiceImpl implements DataService {
 			groups: [],
 		};
 		for (let i = 0; i < finances.length; i += 1) {
+			const calculator = calculatorByIndex(index);
 			const finance = finances[i];
 			const company = finance[0].company;
 			dashboard.groups.push({
@@ -20,7 +20,7 @@ class DataServiceImpl implements DataService {
 				data: finance.map((elem) => {
 					return {
 						xTitle: elem.quarter,
-						yData: calculateFinance(index, elem),
+						yData: calculator(elem),
 					};
 				}),
 				color: colors[i],

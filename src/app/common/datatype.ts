@@ -36,6 +36,7 @@ export type financeIndex =
 	| "영업이익"
 	| "영업이익률"
 	| "매출"
+	| "매출성장률"
 	| "현금성자산"
 	| "ROE";
 
