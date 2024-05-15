@@ -1,6 +1,6 @@
 import { finance, FinancialIndex } from "@/app/common/datatype";
 import { DesignComponent } from "../componentType";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 const explainNotExistData = (finance: finance) => {
 	if (finance.reportCode === null) {

@@ -18,7 +18,7 @@ export const Basic: Story = {
 			{ key: "ROE", name: "ROE" },
 			{ key: "매출", name: "매출" },
 			{ key: "순이익", name: "순이익" },
-			{ key: "영업이익", name: "영업이익" },
+			{ key: "영업이익", name: "영업이익", selected: true },
 			{ key: "자본", name: "자본" },
 			{ key: "영업이익율", name: "영업이익율" },
 			{ key: "부채", name: "부채" },
