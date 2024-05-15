@@ -6,6 +6,7 @@ import {
 	KeyPadContainer,
 	DashboadContainer,
 	IndexFlag,
+	TabSelection,
 } from "./ui";
 import QuestionMarkIcon from "@/app/common/ui/asset/QuestionMarkIcon";
 import Layout from "./ui/design/layout";
@@ -109,6 +110,23 @@ function Dashboard() {
 					})()}
 					yTickFormat={dashboard.indexFormatter}
 					unit={dashboard.indexUnit}
+				/>
+			}
+			yearQuarterSelectionElem={
+				<TabSelection
+					options={[
+						{
+							key: "year",
+							name: "연도별",
+							selected: dashboard.yearlyQuarterly === "year",
+						},
+						{
+							key: "quarter",
+							name: "분기별",
+							selected: dashboard.yearlyQuarterly === "quarter",
+						},
+					]}
+					onClickOption={(key) => dashboard.setYearlyQuarterly(key)}
 				/>
 			}
 			periodElem={

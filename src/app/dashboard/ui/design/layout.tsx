@@ -1,5 +1,6 @@
 export default ({
 	indexKeyPadElem,
+	yearQuarterSelectionElem,
 	companySearchElem,
 	companySelectedElem,
 	chartElem,
@@ -8,6 +9,7 @@ export default ({
 	dataDetailElem,
 }: {
 	indexKeyPadElem: JSX.Element;
+	yearQuarterSelectionElem: JSX.Element;
 	companySearchElem: JSX.Element;
 	companySelectedElem: JSX.Element;
 	chartElem: JSX.Element;
@@ -43,6 +45,9 @@ export default ({
 				<div className="col-span-6 sm:col-span-2 row-span-1 flex flex-col justify-end mt-3">
 					<div className="companySelectedElem h-full">
 						{companySelectedElem}
+					</div>
+					<div className="pt-3 bottom-0 z-20 w-full">
+						{yearQuarterSelectionElem}
 					</div>
 					<div className="pt-3 bottom-0 z-20 w-full">
 						<div className="indexKeyPadElem bg-base-300 rounded-lg">
