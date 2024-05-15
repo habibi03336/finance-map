@@ -41,6 +41,7 @@ const barChart = ({}: {}) => {
 			<Bar
 				style={{ height: "100%" }}
 				options={{
+					animation: false,
 					plugins: {
 						legend: {
 							position: "top" as const,
