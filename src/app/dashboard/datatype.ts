@@ -25,3 +25,5 @@ export type barchart = {
 export type color = {
 	color: string;
 };
+
+export type yearlyQuarterly = "year" | "quarter";

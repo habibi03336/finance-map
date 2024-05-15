@@ -1,9 +1,15 @@
-import { barchart, finance, financeIndex } from "../../../datatype";
+import {
+	barchart,
+	finance,
+	financeIndex,
+	yearlyQuarterly,
+} from "../../../datatype";
 
 export default interface DataService {
 	generateDashboard: (
 		finances: finance[][],
 		colors: string[],
-		index: financeIndex
+		index: financeIndex,
+		yearlyQuarterly: yearlyQuarterly
 	) => barchart;
 }

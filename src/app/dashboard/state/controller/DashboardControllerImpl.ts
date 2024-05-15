@@ -1,5 +1,12 @@
 import { makeAutoObservable } from "mobx";
-import { barchart, color, company, financeIndex, period } from "../../datatype";
+import {
+	barchart,
+	color,
+	company,
+	financeIndex,
+	period,
+	yearlyQuarterly,
+} from "../../datatype";
 import DataService from "../service/data/DataService";
 import IndexService from "../service/index/IndexService";
 import DashboardController from "./DashboardController";
@@ -11,6 +18,7 @@ class DashboardControllerImpl implements DashboardController {
 	private indexService: IndexService;
 	private companyColors: string[] = ["#FF6347", "#77DD77", "#789FCC"];
 	private companiesFinancesByPeriod: CompaniesFinancesByPeriodAndMarket;
+	private _yearlyQuarterly: yearlyQuarterly = "year";
 
 	constructor(
 		companiesFinancesByPeriod: CompaniesFinancesByPeriodAndMarket,
@@ -27,7 +35,8 @@ class DashboardControllerImpl implements DashboardController {
 		return this.dataService.generateDashboard(
 			this.companiesFinancesByPeriod.finances,
 			this.companyColors,
-			this.index
+			this.index,
+			this._yearlyQuarterly
 		);
 	}
 
@@ -55,6 +64,10 @@ class DashboardControllerImpl implements DashboardController {
 		return this.companiesFinancesByPeriod.period;
 	}
 
+	get yearlyQuarterly() {
+		return this._yearlyQuarterly;
+	}
+
 	async addCompany(company: company) {
 		await this.companiesFinancesByPeriod.addCompany(company);
 	}
@@ -76,6 +89,11 @@ class DashboardControllerImpl implements DashboardController {
 			(elem) => elem.companyCode === company.companyCode
 		);
 		// if (findCompany) findCompany.color = color;
+	}
+
+	setYearlyQuarterly(yearlyQuarterly: yearlyQuarterly) {
+		if (yearlyQuarterly === this._yearlyQuarterly) return;
+		this._yearlyQuarterly = yearlyQuarterly;
 	}
 }
 

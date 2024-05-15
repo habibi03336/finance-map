@@ -77,11 +77,22 @@ function Dashboard() {
 					title={dashboard.dashboard ? dashboard.dashboard.index : ""}
 					labels={(() => {
 						const period = dashboard.period;
-						const quarters = Quarter.getAllQuartersBetween(
+						const periodsBetween = Quarter.getAllQuartersBetween(
 							period.start,
 							period.end
 						);
-						return quarters.map((q) => `${q.year}-${q.quarter}`);
+						let labels: string[];
+						if (dashboard.yearlyQuarterly === "year") {
+							labels = [];
+							for (const p of periodsBetween) {
+								if (labels[labels.length - 1] === String(p.year)) {
+									continue;
+								} else labels.push(String(p.year));
+							}
+						} else {
+							labels = periodsBetween.map((q) => `${q.year}-${q.quarter}`);
+						}
+						return labels;
 					})()}
 					datasets={(() => {
 						if (dashboard.dashboard === null) return [];
